@@ -27,13 +27,14 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
 
+    <!-- Added for local Termux Ollama API communication -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- For clipboard manager reading screenshots -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
         android:minSdkVersion="33" />
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove"/>
 
     <application android:label="@string/english_ime_name"
          android:icon="@mipmap/ic_launcher"
@@ -42,6 +43,7 @@
          android:allowBackup="true"
          android:largeHeap="true"
          android:enableOnBackInvokedCallback="true"
+         android:usesCleartextTraffic="true"
          android:name=".CrashLoggingApplication">
 
         <!-- Services -->
@@ -56,19 +58,6 @@
             <meta-data android:name="android.view.im"
                  android:resource="@xml/method"/>
         </service>
-
-        <!--
-        <service android:name=".spellcheck.AndroidSpellCheckerService"
-             android:label="@string/spell_checker_service_name"
-             android:permission="android.permission.BIND_TEXT_SERVICE"
-             android:exported="true">
-            <intent-filter>
-                <action android:name="android.service.textservice.SpellCheckerService"/>
-            </intent-filter>
-            <meta-data android:name="android.view.textservice.scs"
-                 android:resource="@xml/spellchecker"/>
-        </service>
-        -->
 
         <!-- Activities -->
         <activity android:name=".uix.settings.SettingsActivity"
@@ -138,17 +127,6 @@
             </intent-filter>
         </receiver>
 
-        <!--
-        <service
-            android:name="androidx.work.impl.foreground.SystemForegroundService"
-            android:foregroundServiceType="specialUse"
-            tools:node="merge">
-
-            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Neural network model training"/>
-
-        </service>
-        -->
         <activity
             android:name=".payment.PaymentCompleteActivity"
             android:exported="true"
@@ -205,7 +183,6 @@
             android:grantUriPermissions="true" />
     </application>
 
-    <!-- To query enabled input methods for voice IME detection -->
     <queries>
         <intent>
             <action android:name="android.view.InputMethod" />
